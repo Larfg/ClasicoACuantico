@@ -1,6 +1,13 @@
 import numpy as np
 import math
+import pandas as pd
+from pandas import Series, DataFrame
+import matplotlib.pyplot as plt
 
+def mod_comp(num):
+    a = np.real(num)
+    b = np.imag(num)
+    return math.sqrt((a ** 2) + (b ** 2))
 
 def click(m, v):
     matrizEstado = m * v
@@ -42,7 +49,6 @@ def dobleRendijaProb(rendijas,receptores):
                 k = 1
             else:
                 k += 1
-
     else:
         k = 1
         j = 1
@@ -60,6 +66,63 @@ def dobleRendijaProb(rendijas,receptores):
     print("vector estado:\n", a[1])
     return a[1]
 
+def dobleRendijaCuantum(rendijas,receptores):
+    dimension = 1+rendijas+receptores
+    matriz = np.zeros((dimension,dimension),dtype=complex)
+    vector = np.zeros(dimension,dtype=complex)
+    vector[0] = 1
+    p1 = 1/math.sqrt(rendijas)
+    p2 = receptores/rendijas
+    for i in range(rendijas):
+        matriz[i + 1][0] = p1
+    if not(p2.is_integer()):
+        p2 = math.ceil(receptores/rendijas)
+        k = 1
+        j = 1
+        for i in range(rendijas + 1, len(matriz)):
+            if i == rendijas + 1:
+                a = (-1 + 1j)/math.sqrt(p2*rendijas)
+            elif k != p2:
+                a = (-1 - 1j)/math.sqrt(p2*rendijas)
+            elif k == p2:
+                a = (1 - 1j)/math.sqrt(p2*rendijas)
+            matriz[i][j] = a
+            if k  == p2:
+                j += 1
+                matriz[i][j] = (-1 + 1j)/math.sqrt(p2*rendijas)
+                k = 1
+            else:
+                k += 1
+    else:
+        k = 1
+        j = 1
+        for i in range(rendijas + 1, len(matriz)):
+            if k == 1:
+                a = (-1 + 1j)/math.sqrt(p2*rendijas)
+            elif k != p2:
+                a = (-1 - 1j) / math.sqrt(p2 * rendijas)
+            elif k == p2:
+                a = (1 - 1j) / math.sqrt(p2 * rendijas)
+            matriz[i][j] = a
+            if k == p2:
+                j += 1
+                k = 1
+            else:
+                k += 1
+    for i in range(rendijas +1, len(matriz)):
+        matriz[i][i] = 1
+    a = manyClicks(matriz,vector,2)
+    vectorProb = []
+    for i in a[1]:
+        vectorProb.append(mod_comp(i)*mod_comp(i))
+    print("Matriz estado:\n", a[0])
+    print("vector estado:\n", vectorProb)
+    return vectorProb
+
+def graphVector(vector):
+    grid = [x for x in range(len(vector))]
+    plt.bar(grid, vector)
+    plt.show()
 
 def main():
     #Canicas
@@ -71,13 +134,20 @@ def main():
                   [1, 0, 0, 0, 1, 0]])
     v2 = np.array([6, 2, 1, 5, 3, 10])
     a = manyClicks(m, v2, 1)
-    #Varias Rendijas Probabilisticas
     print("Matriz estado:\n", a[0])
     print("vector estado:\n", a[1])
+    # Varias Rendijas Probabilisticas
     rendijas = 2
     receptores = 5
-    vector = dobleRendijaProb(rendijas,receptores)
+    vector1 = dobleRendijaProb(rendijas,receptores)
     #Varias Rendijas Cuanticas
+    rendijas = 2
+    receptores = 5
+    vector2 = dobleRendijaCuantum(rendijas,receptores)
+    #Graficar Vector de estado
+    graphVector(a[1])
+    graphVector(vector1)
+    graphVector(vector2)
 
 if __name__ == '__main__':
     main()
