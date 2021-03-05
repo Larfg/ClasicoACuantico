@@ -132,8 +132,8 @@ def main():
                   [0, 0, 0, 1, 0, 0],
                   [0, 0, 1, 0, 0, 0],
                   [1, 0, 0, 0, 1, 0]])
-    v2 = np.array([6, 2, 1, 5, 3, 10])
-    a = manyClicks(m, v2, 1)
+    v = np.array([6, 2, 1, 5, 3, 10])
+    a = manyClicks(m, v, 1)
     print("Matriz estado:\n", a[0])
     print("vector estado:\n", a[1])
     #TestCase2: Varias Rendijas Probabilisticas
