@@ -125,7 +125,7 @@ def graphVector(vector):
     plt.show()
 
 def main():
-    #Canicas
+    #TestCase1: Canicas
     m = np.array([[0, 0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 0, 0, 1],
@@ -136,15 +136,15 @@ def main():
     a = manyClicks(m, v2, 1)
     print("Matriz estado:\n", a[0])
     print("vector estado:\n", a[1])
-    # Varias Rendijas Probabilisticas
+    #TestCase2: Varias Rendijas Probabilisticas
     rendijas = 2
     receptores = 5
     vector1 = dobleRendijaProb(rendijas,receptores)
-    #Varias Rendijas Cuanticas
+    #TestCase3: Varias Rendijas Cuanticas
     rendijas = 2
     receptores = 5
     vector2 = dobleRendijaCuantum(rendijas,receptores)
-    #Graficar Vector de estado
+    #TestCase4: Graficar Vector de estado
     graphVector(a[1])
     graphVector(vector1)
     graphVector(vector2)
